@@ -50,13 +50,8 @@
 					:key="film.imdbID"
 					:id="`${film.imdbID}`"
 				>
-					<router-link
-						to="#"
-						class="relative"
-						@mouseover="reqDetails(film.imdbID).then(openModal(film.imdbID))"
-						@mouseleave="hideModal"
-						><FilmCard class="relative" :film="film" :filmDetail="filmDetail" />
-						<FilmModal class="pt-5" :filmDetail="filmDetail" />
+					<router-link to="#"
+						><FilmCard class="relative" :film="film" />
 					</router-link>
 				</div>
 			</div>
@@ -66,7 +61,6 @@
 
 <script setup>
 	import FilmCard from './FilmCard.vue';
-	import FilmModal from './FilmModal.vue';
 	import { computed } from 'vue';
 	import { useStore } from 'vuex';
 	import { ref } from 'vue';
@@ -81,10 +75,6 @@
 
 	const totalResults = computed(() => {
 		return store.state.omdb.totalResults;
-	});
-
-	const filmDetail = computed(() => {
-		return store.state.omdb.film;
 	});
 
 	const pageNo = computed(() => {
@@ -124,18 +114,6 @@
 		store.commit('setQuery', query);
 		store.dispatch('getFilms');
 	};
-
-	async function reqDetails(id) {
-		store.commit('setFilmID', id);
-		store.dispatch('getSpecificFilm');
-	}
-
-	function openModal(id) {
-		const activeFilm = document.querySelector(`#${id}`);
-		const modal = activeFilm.querySelector('.modal');
-		modal.classList.remove('invisible', 'opacity-0');
-		modal.classList.add('visible', 'opacity-80');
-	}
 
 	function hideModal() {
 		store.commit('setFilm', {});
