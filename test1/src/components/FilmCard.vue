@@ -9,8 +9,8 @@
 			<img :src="film.Poster" />
 			<h4>{{ film.Year }}</h4>
 		</div>
-		<div v-show="(hover = true)">
-			<FilmDetail :filmDetail="filmDetail" />
+		<div v-show="hover">
+			<FilmDetail :filmDetail="filmDetail" :hover="hover" />
 		</div>
 	</div>
 </template>

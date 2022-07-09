@@ -152,8 +152,4 @@
 	}
 </script>
 
-<style lang="css" scoped>
-	.active {
-		display: flex;
-	}
-</style>
+<style lang="scss" scoped></style>
