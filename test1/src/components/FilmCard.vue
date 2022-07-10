@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div
-			@mouseover="reqDetails(film.imdbID)"
+			@mouseover="hoverActiveDetails(film.imdbID)"
 			@mouseleave="hoverInactive"
 			class="flex flex-col items-center justify-center bg-black text-white"
 		>
@@ -31,20 +31,15 @@
 		return store.state.omdb.film;
 	});
 
-	function reqDetails(id) {
+	function hoverActiveDetails(id) {
 		store.commit('setFilmID', id);
 		store.dispatch('getSpecificFilm');
-		hoverActive();
-	}
-
-	function hoverActive() {
 		hover.value = true;
-		console.log(hover);
 	}
 
 	function hoverInactive() {
 		hover.value = false;
-		console.log(hover);
+		store.commit('setFilm', {});
 	}
 
 	defineProps({

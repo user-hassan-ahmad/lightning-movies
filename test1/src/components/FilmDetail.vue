@@ -1,8 +1,11 @@
 <template>
 	<div class="expander">
 		<div>Type: {{ filmDetail.Type }}</div>
-		<div>IMDB Rating: {{ filmDetail.imdbRating }}</div>
-		<div>IMDB vote count: {{ filmDetail.imdbVotes }}</div>
+		<div>
+			IMDB Rating: {{ filmDetail.imdbRating }} | vote count:
+			{{ filmDetail.imdbVotes }}
+		</div>
+		<div>Runtime: {{ filmDetail.Runtime }}</div>
 		<div>Genre: {{ filmDetail.Genre }}</div>
 		<div>Language: {{ filmDetail.Language }}</div>
 		<div>Plot: {{ filmDetail.Plot }}</div>
