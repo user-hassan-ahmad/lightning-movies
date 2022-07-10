@@ -1,20 +1,24 @@
 <template>
-	<div>
-		<div
-			@mouseover="hoverActiveDetails(film.imdbID)"
-			@mouseleave="hoverInactive"
-			class="flex flex-col items-center justify-center bg-black text-white"
-		>
-			<h3 class="text-center px-2">{{ film.Title }}</h3>
-			<img :src="film.Poster" />
-			<h4>{{ film.Year }}</h4>
-		</div>
+	<router-link
+		:to="`/film-page/${film.imdbID}/${film.Title.replace(/ /g, '-')}`"
+	>
 		<div>
-			<Transition name="fade">
-				<FilmDetail v-show="hover" :filmDetail="filmDetail" />
-			</Transition>
+			<div
+				@mouseover="hoverActiveDetails(film.imdbID)"
+				@mouseleave="hoverState(false)"
+				class="flex flex-col items-center justify-center bg-black text-white"
+			>
+				<h3 class="text-center px-2">{{ film.Title }}</h3>
+				<img :src="film.Poster" />
+				<h4>{{ film.Year }}</h4>
+			</div>
+			<div>
+				<Transition name="fade">
+					<FilmDetail v-show="hover" :filmDetail="filmDetail" />
+				</Transition>
+			</div>
 		</div>
-	</div>
+	</router-link>
 </template>
 
 <script setup>
@@ -34,12 +38,11 @@
 	function hoverActiveDetails(id) {
 		store.commit('setFilmID', id);
 		store.dispatch('getSpecificFilm');
-		hover.value = true;
+		hoverState(true);
 	}
 
-	function hoverInactive() {
-		hover.value = false;
-		store.commit('setFilm', {});
+	function hoverState(bool) {
+		hover.value = bool;
 	}
 
 	defineProps({

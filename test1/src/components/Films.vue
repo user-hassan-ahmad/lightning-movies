@@ -14,6 +14,7 @@
 				placeholder="search movie title..."
 				v-model="query"
 				v-on:keyup="getFilms"
+				v-focus
 			/>
 
 			<div
@@ -50,9 +51,7 @@
 					:key="film.imdbID"
 					:id="`${film.imdbID}`"
 				>
-					<router-link to="#"
-						><FilmCard class="relative" :film="film" />
-					</router-link>
+					<FilmCard class="relative" :film="film" />
 				</div>
 			</div>
 		</div>
@@ -61,9 +60,8 @@
 
 <script setup>
 	import FilmCard from './FilmCard.vue';
-	import { computed } from 'vue';
+	import { computed, ref } from 'vue';
 	import { useStore } from 'vuex';
-	import { ref } from 'vue';
 
 	let query = ref('');
 
@@ -83,6 +81,12 @@
 	const totalPages = computed(() => {
 		return store.state.omdb.totalPages;
 	});
+
+	const vFocus = {
+		mounted: (el) => {
+			el.focus();
+		},
+	};
 
 	const reset = () => {
 		store.commit('setFilms', []);
