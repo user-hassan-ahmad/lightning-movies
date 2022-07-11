@@ -94,23 +94,23 @@
 		computed(() => {
 			return (query = store.state.omdb.query);
 		});
-		hideModal();
+		store.commit('setFilm', {});
 	};
 
 	const selectPage = (page) => {
 		store.commit('setPage', page);
 		store.dispatch('getFilms');
-		hideModal();
+		store.commit('setFilm', {});
 	};
 	const downPage = () => {
 		store.commit('downPage');
 		store.dispatch('getFilms');
-		hideModal();
+		store.commit('setFilm', {});
 	};
 	const upPage = () => {
 		store.commit('upPage');
 		store.dispatch('getFilms');
-		hideModal();
+		store.commit('setFilm', {});
 	};
 
 	const getFilms = () => {
@@ -118,20 +118,6 @@
 		store.commit('setQuery', query);
 		store.dispatch('getFilms');
 	};
-
-	function hideModal() {
-		store.commit('setFilm', {});
-		document.querySelectorAll('.modal').forEach((modal) => {
-			void (
-				modal.classList.contains('visible', 'opacity-80') &&
-				modal.classList.remove('visible', 'opacity-80')
-			);
-			void (
-				!modal.classList.contains('invisible', 'opacity-0') &&
-				modal.classList.add('invisible', 'opacity-0')
-			);
-		});
-	}
 </script>
 
 <style lang="scss" scoped></style>

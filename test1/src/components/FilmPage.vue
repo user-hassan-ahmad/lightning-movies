@@ -13,6 +13,11 @@
 					{{ filmDetail.imdbVotes }} | <span class="font-bold">Runtime:</span>
 					{{ filmDetail.Runtime }}
 				</div>
+				<div><span class="font-bold">Type:</span> {{ filmDetail.Type }}</div>
+				<div><span class="font-bold">Year:</span> {{ filmDetail.Year }}</div>
+				<div v-if="filmDetail.Type === 'series'">
+					<span class="font-bold">Seasons:</span> {{ filmDetail.totalSeasons }}
+				</div>
 
 				<div><span class="font-bold"> Genre:</span> {{ filmDetail.Genre }}</div>
 				<div>
@@ -22,7 +27,21 @@
 			</div>
 		</div>
 
-		<a class="cursor-pointer text-lg font-bold" @click="$router.go(-1)">back</a>
+		<div class="w-3/4 flex justify-between">
+			<a class="cursor-pointer text-lg font-bold" @click="$router.go(-1)"
+				>Back</a
+			>
+			<a
+				@click="sendMeTo(filmDetail.imdbID)"
+				class="cursor-pointer text-lg font-bold"
+				>Official IMDB Page</a
+			>
+			<a
+				@click="sendMeTo(filmDetail.imdbID, 'parentalguide')"
+				class="cursor-pointer text-lg font-bold"
+				>Parental Guide</a
+			>
+		</div>
 	</div>
 </template>
 
@@ -35,12 +54,12 @@
 
 	onMounted(() => {
 		const filmId = route.params.id;
-		getSpecificFilm(filmId);
+		getFilm(filmId);
 	});
 
 	const store = useStore();
 
-	function getSpecificFilm(id) {
+	function getFilm(id) {
 		store.commit('setFilmID', id);
 		store.dispatch('getSpecificFilm');
 	}
@@ -48,6 +67,13 @@
 	const filmDetail = computed(() => {
 		return store.state.omdb.film;
 	});
+
+	function sendMeTo(id, extension) {
+		window.open(
+			`https://www.imdb.com/title/${id}/${extension ? `${extension}` : ''}`,
+			'_blank'
+		);
+	}
 </script>
 
 <style lang="scss" scoped></style>

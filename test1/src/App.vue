@@ -2,8 +2,8 @@
 	<div class="flex place-content-center">
 		<router-view v-slot="{ Component }">
 			<Transition
-				enter-active-class="animate__animated animate__zoomInUp"
-				leave-active-class="animate__animated animate__zoomOutDown"
+				enter-active-class="animate__animated animate__fadeInLeft"
+				leave-active-class="animate__animated animate__fadeOutRight"
 				mode="out-in"
 			>
 				<component :is="Component" />
@@ -15,13 +15,8 @@
 <script setup></script>
 
 <style lang="scss">
-	.slide-enter-from,
-	.slide-leave-to {
-		opacity: 0;
-	}
-
-	.slide-enter-active,
-	.slide-leave-active {
-		transition: opacity 0.3s ease-out;
+	.animate__animated.animate__fadeInLeft,
+	.animate__animated.animate__fadeOutRight {
+		--animate-duration: 0.4s;
 	}
 </style>
