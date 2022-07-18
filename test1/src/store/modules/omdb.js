@@ -5,6 +5,9 @@ export default {
 		films: [],
 		filmID: '',
 		film: {},
+		parentalGuidance: [],
+		watchGuide: [],
+		YTSDetails: {},
 		query: '',
 		totalResults: '',
 		totalPages: Number,
@@ -13,6 +16,9 @@ export default {
 	getters: {
 		getQuery(state) {
 			return state.query;
+		},
+		getMovieSuggestions(state) {
+			return state.YTSDetails[1].movieSuggestions;
 		},
 	},
 	mutations: {
@@ -26,6 +32,18 @@ export default {
 		},
 		setFilm(state, film) {
 			state.film = film;
+		},
+		setParentalGuidance(state, parentalGuidance) {
+			state.parentalGuidance = parentalGuidance;
+		},
+		setWatchGuide(state, watchGuide) {
+			state.watchGuide = watchGuide;
+		},
+		setYTSDetails(state, YTSDetails) {
+			state.YTSDetails = YTSDetails;
+		},
+		setMovieSuggestions(state, movieSuggestions) {
+			state.movieSuggestions = movieSuggestions;
 		},
 		setQuery(state, query) {
 			state.query = query;
@@ -75,6 +93,58 @@ export default {
 			} catch (err) {
 				// Handle Error Here
 				console.error(err);
+			}
+		},
+
+		getParentalGuidance: async ({ commit, state }) => {
+			try {
+				const response = await axios
+					.get('http://localhost:8080/parental-guide', {
+						params: {
+							imdbID: state.filmID,
+						},
+					})
+					.then((response) => {
+						console.log(response.data);
+						commit('setParentalGuidance', response.data);
+					});
+			} catch (err) {
+				console.error(err);
+			}
+		},
+
+		getWatchGuide: async ({ commit, state }) => {
+			try {
+				const response = await axios
+					.get('http://localhost:8080/watch-guide-v1', {
+						params: {
+							imdbID: state.filmID,
+						},
+					})
+					.then((response) => {
+						console.log(response.data);
+						commit('setWatchGuide', response.data);
+					});
+			} catch (err) {
+				console.log(err);
+			}
+		},
+
+		getYTSDetails: async ({ commit, state }) => {
+			try {
+				const response = await axios('http://localhost:8080/watch-yts', {
+					params: {
+						imdbID: state.filmID,
+					},
+				}).then((response) => {
+					const YTSDetails = response.data[0].movieDetails;
+					const movieSuggestions = response.data[1].movieSuggestions;
+					console.log(YTSDetails, movieSuggestions);
+					commit('setYTSDetails', YTSDetails);
+					commit('setMovieSuggestions', movieSuggestions);
+				});
+			} catch (err) {
+				console.log(err);
 			}
 		},
 	},

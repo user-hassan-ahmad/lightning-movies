@@ -1,11 +1,11 @@
 import { createStore } from 'vuex';
-import counter from './modules/counter';
 import omdb from './modules/omdb';
+import news from './modules/news';
 
 const store = createStore({
 	modules: {
-		counter,
 		omdb,
+		news,
 	},
 });
 

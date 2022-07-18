@@ -1,7 +1,5 @@
 <template>
-	<router-link
-		:to="`/film-page/${film.imdbID}/${film.Title.replace(/ /g, '-')}`"
-	>
+	<router-link :to="`/film-page/${film.imdbID}/`">
 		<div>
 			<div
 				@mouseover="hoverActiveDetails(film.imdbID)"
@@ -13,7 +11,7 @@
 				<h4>{{ film.Year }}</h4>
 			</div>
 			<div>
-				<Transition name="fade">
+				<Transition name="bounce">
 					<FilmDetail v-show="hover" :filmDetail="filmDetail" />
 				</Transition>
 			</div>
@@ -51,12 +49,9 @@
 </script>
 
 <style lang="scss" scoped>
-	.fade-enter-active {
+	.bounce-enter-active {
 		animation: bounce-in 0.3s;
 	}
-	.fade-leave-active {
-	}
-
 	@keyframes bounce-in {
 		0% {
 			transform: scale(0);
@@ -67,9 +62,5 @@
 		100% {
 			transform: scale(1);
 		}
-	}
-
-	.fade-enter-from,
-	.fade-leave-to {
 	}
 </style>

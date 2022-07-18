@@ -6,7 +6,7 @@
 				leave-active-class="animate__animated animate__fadeOutRight"
 				mode="out-in"
 			>
-				<component :is="Component" />
+				<component :is="Component" :key="$route.path" />
 			</Transition>
 		</router-view>
 	</div>
