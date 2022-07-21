@@ -1,7 +1,7 @@
 const express = require('express');
 const cheerio = require('cheerio');
 const axios = require('axios');
-const port = 8080;
+const port = process.env.PORT || 5000;
 const cors = require('cors');
 const tmdbAPIKey = '4a6c4c931829a02d62c31795cb0cd336';
 
@@ -155,27 +155,3 @@ app.listen(port, function (error) {
 		console.log('server is listening on port', port);
 	}
 });
-
-// imdbID = 'tt3522806';
-
-// const MD_url = `https://yts.torrentbay.to/api/v2/movie_details.json?imdb_id=${imdbID}&with_cast=true`;
-// const MS_url = `https://yts.torrentbay.to/api/v2/movie_suggestions.json?movie_id=`;
-
-// const getData = async () => {
-// 	let posts = [];
-// 	axios
-// 		.get(MD_url + imdbID)
-// 		.then((response) => response.data.data.movie)
-// 		.then((data) => {
-// 			const movieDetails = data;
-// 			posts.push({ movieDetails });
-
-// 			axios.get(MS_url + data.id).then((response) => {
-// 				const movieSuggestions = response.data.data.movies;
-// 				posts.push({ movieSuggestions });
-// 				console.log(posts);
-// 			});
-// 		});
-// };
-
-// getData();
