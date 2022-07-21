@@ -1,6 +1,5 @@
 const express = require('express');
 const cheerio = require('cheerio');
-const JustWatch = require('justwatch-api');
 const axios = require('axios');
 const port = 8080;
 const cors = require('cors');
@@ -9,30 +8,6 @@ const tmdbAPIKey = '4a6c4c931829a02d62c31795cb0cd336';
 const app = express();
 
 app.use(cors());
-
-app.get('/', function (req, res) {
-	let url = 'https://www.theguardian.com/uk';
-	axios(url)
-		.then((response) => {
-			let html = response.data;
-			let $ = cheerio.load(html);
-			let posts = [];
-
-			$('.fc-item__title', html).each(function () {
-				let title = $(this)
-					.text()
-					.trim()
-					.replace(/[\r\n\s]{2,}/gm, ' - ');
-				let url = $(this).find('a').attr('href');
-				if (title.length > 0) {
-					posts.push({ title, url });
-				}
-			});
-
-			res.json(posts);
-		})
-		.catch((err) => console.log(err));
-});
 
 app.get('/parental-guide', function (req, res) {
 	const ID = req.query.imdbID;
@@ -71,64 +46,6 @@ app.get('/parental-guide', function (req, res) {
 			res.json(posts);
 		})
 		.catch((err) => console.log(err));
-});
-
-app.get('/watch-guide', function (req, res) {
-	const jw = new JustWatch();
-	const filmTitle = req.query.filmTitle;
-
-	jw.search(filmTitle)
-		.then((response) => {
-			console.log(response.items[0].full_path.replace('us', 'uk'));
-			return response.items[0].full_path
-				.replace('us', 'uk')
-				.replace('show', 'series');
-		})
-		.then((data) => {
-			if (data.length > 0) {
-				const base_url = 'https://www.justwatch.com';
-				const CancelToken = axios.CancelToken;
-				const source = CancelToken.source();
-				axios(base_url + data, {
-					cancelToken: source.token,
-				})
-					.then((response) => {
-						let html = response.data;
-						let posts = [];
-						const $ = cheerio.load(html);
-						$('.promoted-buybox')
-							.find('.price-comparison__grid__row')
-							.each(function () {
-								let options = [];
-								const mediaMethod = $(this)
-									.find('.price-comparison__grid__row__title')
-									.text();
-								const mediaMethodOpt = $(this)
-									.find('.presentation-type')
-									.each(function () {
-										const mediaSrcLink = $(this).find('a').attr('href');
-										const mediaTitle = $(this).find('img').attr('alt');
-										const mediaImg = $(this)
-											.find('a source')
-											.attr('data-srcset');
-										options.push({ mediaSrcLink, mediaTitle, mediaImg });
-									});
-
-								posts.push({ mediaMethod, options });
-							});
-
-						console.log(posts);
-						res.json(posts);
-					})
-					.catch(function (thrown) {
-						if (axios.isCancel(thrown)) {
-							console.log('Request canceled', thrown.message);
-						} else {
-							console.log('error');
-						}
-					});
-			}
-		});
 });
 
 app.get('/watch-guide-v1', function (req, res) {
