@@ -1,7 +1,7 @@
 const express = require('express');
 const cheerio = require('cheerio');
 const axios = require('axios');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 const cors = require('cors');
 const tmdbAPIKey = '4a6c4c931829a02d62c31795cb0cd336';
 

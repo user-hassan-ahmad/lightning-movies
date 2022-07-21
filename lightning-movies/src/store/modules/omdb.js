@@ -99,7 +99,7 @@ export default {
 		getParentalGuidance: async ({ commit, state }) => {
 			try {
 				const response = await axios
-					.get('http://localhost:8080/parental-guide', {
+					.get('api/parental-guide', {
 						params: {
 							imdbID: state.filmID,
 						},
@@ -116,7 +116,7 @@ export default {
 		getWatchGuide: async ({ commit, state }) => {
 			try {
 				const response = await axios
-					.get('http://localhost:8080/watch-guide-v1', {
+					.get('api/watch-guide-v1', {
 						params: {
 							imdbID: state.filmID,
 						},
@@ -132,17 +132,19 @@ export default {
 
 		getYTSDetails: async ({ commit, state }) => {
 			try {
-				const response = await axios('http://localhost:8080/watch-yts', {
-					params: {
-						imdbID: state.filmID,
-					},
-				}).then((response) => {
-					const YTSDetails = response.data[0].movieDetails;
-					const movieSuggestions = response.data[1].movieSuggestions;
-					console.log(YTSDetails, movieSuggestions);
-					commit('setYTSDetails', YTSDetails);
-					commit('setMovieSuggestions', movieSuggestions);
-				});
+				const response = await axios
+					.get('api/watch-yts', {
+						params: {
+							imdbID: state.filmID,
+						},
+					})
+					.then((response) => {
+						const YTSDetails = response.data[0].movieDetails;
+						const movieSuggestions = response.data[1].movieSuggestions;
+						console.log(YTSDetails, movieSuggestions);
+						commit('setYTSDetails', YTSDetails);
+						commit('setMovieSuggestions', movieSuggestions);
+					});
 			} catch (err) {
 				console.log(err);
 			}

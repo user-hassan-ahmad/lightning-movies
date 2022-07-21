@@ -1,7 +1,7 @@
 <template>
 	<div class="w-3/4 flex flex-col justify-center items-center">
 		<div class="w-full mt-10 flex justify-center items-center">
-			<router-link to="/films"
+			<router-link to="/"
 				><i @click="reset" class="fa-brands fa-imdb text-9xl"></i
 			></router-link>
 		</div>
