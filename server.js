@@ -139,7 +139,7 @@ app.get('/api/watch-yts', function (req, res) {
 
 	let posts = [];
 	axios
-		.get(MD_url + imdbID)
+		.get(MD_url)
 		.then((response) => response.data.data.movie)
 		.then((data) => {
 			const movieDetails = data;
