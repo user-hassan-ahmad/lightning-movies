@@ -68,7 +68,7 @@ export default {
 				try {
 					const response = await axios
 						.get(
-							`http://www.omdbapi.com/?s=${state.query}&apikey=1d8829c5&page=${state.page}`
+							`https://www.omdbapi.com/?s=${state.query}&apikey=1d8829c5&page=${state.page}`
 						)
 						.then((response) => {
 							commit('setFilms', response.data);
@@ -85,7 +85,7 @@ export default {
 		getSpecificFilm: async ({ commit, state }) => {
 			try {
 				const response = await axios
-					.get(`http://www.omdbapi.com/?i=${state.filmID}&apikey=1d8829c5`)
+					.get(`https://www.omdbapi.com/?i=${state.filmID}&apikey=1d8829c5`)
 					.then((response) => {
 						console.log(response.data);
 						commit('setFilm', response.data);
