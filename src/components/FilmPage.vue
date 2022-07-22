@@ -1,7 +1,7 @@
 <template>
 	<div class="p-10 h-full w-full flex flex-col justify-evenly items-center">
 		<router-link to="/"
-			><i @click="reset" class="fa-brands fa-imdb text-6xl"></i
+			><i @click="reset" class="fa-solid fa-cloud-bolt text-6xl"></i
 		></router-link>
 		<div class="text-4xl text-center mt-5 mb-5">{{ filmDetail.Title }}</div>
 
