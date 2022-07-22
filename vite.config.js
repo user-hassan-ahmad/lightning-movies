@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import mix from 'vite-plugin-mix';
+import mix, { vercelAdapter } from 'vite-plugin-mix';
 import vue from '@vitejs/plugin-vue';
 // const port = process.env.PORT || 'http://localhost:8080';
 
