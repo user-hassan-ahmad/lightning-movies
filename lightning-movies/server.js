@@ -1,15 +1,20 @@
-const express = require('express');
-const cheerio = require('cheerio');
-const axios = require('axios');
-const port = process.env.PORT || 8080;
-const cors = require('cors');
+// const express = require('express');
+// const cheerio = require('cheerio');
+// const axios = require('axios');
+// const port = process.env.PORT || 8080;
+// const cors = require('cors');
+
+import express from 'express';
+import cheerio from 'cheerio';
+import axios from 'axios';
+import cors from 'cors';
 const tmdbAPIKey = '4a6c4c931829a02d62c31795cb0cd336';
 
 const app = express();
 
 app.use(cors());
 
-app.get('/parental-guide', function (req, res) {
+app.get('/api/parental-guide', function (req, res) {
 	const ID = req.query.imdbID;
 	let url = `https://www.imdb.com/title/${ID}/parentalguide`;
 	axios(url)
@@ -48,7 +53,7 @@ app.get('/parental-guide', function (req, res) {
 		.catch((err) => console.log(err));
 });
 
-app.get('/watch-guide-v1', function (req, res) {
+app.get('/api/watch-guide-v1', function (req, res) {
 	const imdbID = req.query.imdbID;
 	const tmdb_base_url = 'https://www.themoviedb.org';
 	let posts = [];
@@ -127,7 +132,7 @@ app.get('/watch-guide-v1', function (req, res) {
 		});
 });
 
-app.get('/watch-yts', function (req, res) {
+app.get('/api/watch-yts', function (req, res) {
 	const imdbID = req.query.imdbID;
 	const MD_url = `https://yts.torrentbay.to/api/v2/movie_details.json?imdb_id=${imdbID}&with_cast=true`;
 	const MS_url = `https://yts.torrentbay.to/api/v2/movie_suggestions.json?movie_id=`;
@@ -148,10 +153,12 @@ app.get('/watch-yts', function (req, res) {
 		});
 });
 
-app.listen(port, function (error) {
-	if (error) {
-		console.log('something went wrong', error);
-	} else {
-		console.log('server is listening on port', port);
-	}
-});
+export const handler = app;
+
+// app.listen(port, function (error) {
+// 	if (error) {
+// 		console.log('something went wrong', error);
+// 	} else {
+// 		console.log('server is listening on port', port);
+// 	}
+// });
