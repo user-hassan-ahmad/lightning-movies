@@ -1,10 +1,10 @@
 <template>
-	<div class="expander">
+	<div class="h-full w-full p-2 text-sm">
 		<div
 			v-if="Object.keys(filmDetail).length === 0"
-			class="h-full w-full flex flex-col justify-evenly items-center"
+			class="h-full w-full flex flex-col justify-evenly items-center text-6xl"
 		>
-			LOADING...
+			...
 		</div>
 		<div v-else class="h-full flex flex-col justify-evenly">
 			<div>Type: {{ filmDetail.Type }}</div>
@@ -21,27 +21,11 @@
 </template>
 
 <script setup>
+	import { useMouse } from '@vueuse/core';
+
 	defineProps({
 		filmDetail: Object,
 	});
 </script>
 
-<style lang="scss" scoped>
-	.expander {
-		position: absolute;
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		justify-content: space-evenly;
-		height: 50vh;
-		width: 200%;
-		background-color: black;
-		color: white;
-		font-size: 0.8vw;
-		top: -30%;
-		left: 110%;
-		z-index: 100;
-		padding: 10px;
-		border-radius: 10px;
-	}
-</style>
+<style lang="scss" scoped></style>
