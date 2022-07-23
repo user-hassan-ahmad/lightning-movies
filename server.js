@@ -134,8 +134,8 @@ app.get('/api/watch-guide-v1', function (req, res) {
 
 app.get('/api/watch-yts', function (req, res) {
 	const imdbID = req.query.imdbID;
-	const MD_url = `https://yts.torrentbay.to/api/v2/movie_details.json?imdb_id=${imdbID}&with_cast=true`;
-	const MS_url = `https://yts.torrentbay.to/api/v2/movie_suggestions.json?movie_id=`;
+	const MD_url = `https://yts.mx/api/v2/movie_details.json?imdb_id=${imdbID}&with_cast=true`;
+	const MS_url = `https://yts.mx/api/v2/movie_suggestions.json?movie_id=`;
 
 	let posts = [];
 	axios
