@@ -4,7 +4,10 @@
 		class="absolute top-0 flex flex-col w-full sm:w-3/4 mt-10 bg-slate-200 p-10 rounded"
 	>
 		<div class="flex justify-center pb-5">
-			<i @click="$emit('parentToggle')" class="fa-solid fa-xmark"></i>
+			<i
+				@click="$emit('parentToggle')"
+				class="fa-solid fa-xmark cursor-pointer"
+			></i>
 		</div>
 		<div v-for="(post, i) in posts" :key="i">
 			<div class="flex flex-col">
