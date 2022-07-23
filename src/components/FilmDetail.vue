@@ -21,8 +21,6 @@
 </template>
 
 <script setup>
-	import { useMouse } from '@vueuse/core';
-
 	defineProps({
 		filmDetail: Object,
 	});
