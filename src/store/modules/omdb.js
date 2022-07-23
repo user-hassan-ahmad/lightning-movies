@@ -68,7 +68,7 @@ export default {
 				try {
 					const response = await axios
 						.get(
-							`https://www.omdbapi.com/?s=${state.query}&apikey=1d8829c5&page=${state.page}`
+							`https://www.omdbapi.com/?s=${state.query}*&apikey=1d8829c5&page=${state.page}`
 						)
 						.then((response) => {
 							commit('setFilms', response.data);
