@@ -7,21 +7,19 @@
 
 		<div class="w-full flex flex-col items-center">
 			<div class="w-1/2 flex items-center justify-evenly">
-				<div class="flex items-center">
+				<div @click="wToggle" class="flex items-center">
 					<i class="fa-solid fa-eye text-2xl"></i>
-					<div @click="wToggle" class="cursor-pointer m-4">Watch Options</div>
+					<div class="hidden sm:flex cursor-pointer m-4">Watch Options</div>
 				</div>
 
-				<div class="flex items-center">
+				<div @click="sToggle" class="flex items-center">
 					<i class="fa-solid fa-lightbulb text-2xl"></i>
-					<div @click="sToggle" class="cursor-pointer m-4">
-						Movie Suggestions
-					</div>
+					<div class="hidden sm:flex cursor-pointer m-4">Movie Suggestions</div>
 				</div>
 
-				<div class="flex items-center">
+				<div @click="tToggle" class="flex items-center">
 					<i class="fa-solid fa-link text-2xl"></i>
-					<div @click="tToggle" class="cursor-pointer m-4">YTS torrents</div>
+					<div class="hidden sm:flex cursor-pointer m-4">YTS torrents</div>
 				</div>
 			</div>
 
@@ -53,11 +51,13 @@
 			</div>
 		</div>
 
-		<div class="flex justify-evenly mt-10">
+		<div
+			class="relative flex flex-col items-center sm:flex-row justify-evenly mt-10"
+		>
 			<div class="p-5">
 				<img :src="filmDetail.Poster" alt="film-poster" />
 			</div>
-			<div class="p-5 w-1/2 flex flex-col justify-evenly">
+			<div class="p-5 w-full sm:w-1/2 flex flex-col justify-evenly">
 				<div>
 					<span class="font-bold">IMDB Rating:</span>
 					{{ filmDetail.imdbRating }} |
@@ -88,16 +88,18 @@
 			</div>
 		</div>
 
-		<div class="w-3/4 flex justify-between mt-10">
-			<a class="cursor-pointer text-lg font-bold" @click="$router.go(-1)"
+		<div
+			class="w-3/4 flex flex-col sm:flex-row items-center sm:justify-between mt-10"
+		>
+			<a class="cursor-pointer text-lg font-bold mb-2" @click="$router.go(-1)"
 				>Back</a
 			>
 			<a
 				@click="sendMeTo(filmDetail.imdbID)"
-				class="cursor-pointer text-lg font-bold"
+				class="cursor-pointer text-lg font-bold mb-2"
 				>Official IMDB Page</a
 			>
-			<a @click="PGToggle" class="cursor-pointer text-lg font-bold"
+			<a @click="PGToggle" class="cursor-pointer text-lg font-bold mb-2"
 				>Parental Guide</a
 			>
 		</div>
@@ -106,7 +108,12 @@
 			leave-active-class="animate__animated animate__fadeOutDown"
 			mode="out-in"
 		>
-			<FilmParentalGuide v-show="parentToggle" :posts="parentalGuidance" />
+			<FilmParentalGuide
+				v-show="parentToggle"
+				:posts="parentalGuidance"
+				:parentToggle="parentToggle"
+				@parentToggle="PGToggle"
+			/>
 		</Transition>
 	</div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full flex mt-5">
+	<div class="w-full flex flex-wrap md:flex-nowrap mt-5">
 		<div class="w-full flex justify-evenly" v-for="post in posts">
 			<router-link :to="`/film-page/${post.imdb_code}/`">
 				<div class="flex flex-col items-center p-5">

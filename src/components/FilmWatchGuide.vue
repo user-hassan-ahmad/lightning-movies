@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-5 w-full flex justify-center">
+	<div class="mt-5 w-full flex flex-wrap sm:flex-nowrap justify-evenly">
 		<div v-if="posts.length === 0">
 			<h3 class="font-bold">Couldn't find anything, sorry!</h3>
 		</div>

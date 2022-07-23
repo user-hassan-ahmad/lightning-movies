@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full flex justify-evenly mt-5">
+	<div class="w-full flex flex-wrap sm:flex-nowrap justify-evenly mt-5">
 		<div v-if="posts.torrents === undefined">
 			<h3 class="font-bold">Couldn't find anything, sorry!</h3>
 		</div>
