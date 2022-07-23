@@ -41,6 +41,9 @@
 
 	function hoverState(bool) {
 		hover.value = bool;
+		if (bool === false) {
+			store.commit('setFilm', {});
+		}
 	}
 
 	defineProps({
