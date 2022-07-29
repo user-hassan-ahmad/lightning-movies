@@ -1,25 +1,45 @@
 <template>
 	<div class="p-10 h-full w-full flex flex-col justify-evenly items-center">
+		<SideNavExpander />
 		<router-link to="/"
 			><i @click="reset" class="fa-solid fa-cloud-bolt text-6xl"></i
 		></router-link>
 		<div class="text-4xl text-center mt-5 mb-5">{{ filmDetail.Title }}</div>
 
 		<div class="w-full flex flex-col items-center">
-			<div class="w-1/2 flex items-center justify-evenly">
-				<div @click="wToggle" class="flex items-center">
+			<div class="w-3/4 flex items-center justify-evenly">
+				<div @click="wToggle" class="flex items-center cursor-pointer">
 					<i class="fa-solid fa-eye text-2xl"></i>
-					<div class="hidden sm:flex cursor-pointer m-4">Watch Options</div>
+					<div class="hidden md:flex m-4">Watch Options</div>
 				</div>
 
-				<div @click="sToggle" class="flex items-center">
+				<div @click="sToggle" class="flex items-center cursor-pointer">
 					<i class="fa-solid fa-lightbulb text-2xl"></i>
-					<div class="hidden sm:flex cursor-pointer m-4">Movie Suggestions</div>
+					<div class="hidden md:flex m-4">Movie Suggestions</div>
 				</div>
 
-				<div @click="tToggle" class="flex items-center">
+				<div @click="tToggle" class="flex items-center cursor-pointer">
 					<i class="fa-solid fa-link text-2xl"></i>
-					<div class="hidden sm:flex cursor-pointer m-4">YTS torrents</div>
+					<div class="hidden md:flex m-4">YTS torrents</div>
+				</div>
+
+				<div
+					v-if="added"
+					v-show="isSignedIn"
+					@click="removeWatchList(filmDetail)"
+					class="flex items-center cursor-pointer"
+				>
+					<i class="fa-solid fa-folder-minus text-2xl"></i>
+					<div class="hidden md:flex m-4">Remove from Watch List</div>
+				</div>
+				<div
+					v-else
+					v-show="isSignedIn"
+					@click="addWatchList(filmDetail)"
+					class="flex items-center cursor-pointer"
+				>
+					<i class="fa-solid fa-folder-plus text-2xl"></i>
+					<div class="hidden md:flex m-4">Add to Watch List</div>
 				</div>
 			</div>
 
@@ -121,25 +141,57 @@
 <script setup>
 	import { useRoute } from 'vue-router';
 	import { ref, onMounted, onUnmounted, computed } from 'vue';
+	import { getAuth, onAuthStateChanged } from 'firebase/auth';
+	import {
+		doc,
+		collection,
+		onSnapshot,
+		deleteDoc,
+		setDoc,
+		serverTimestamp,
+	} from 'firebase/firestore';
+	import { db } from '../main';
 	import { useStore } from 'vuex';
 	import FilmParentalGuide from './FilmParentalGuide.vue';
 	import FilmWatchGuide from './FilmWatchGuide.vue';
 	import MovieSuggestions from './MovieSuggestions.vue';
 	import FilmYTSTorrents from './FilmYTSTorrents.vue';
+	import SideNavExpander from './SideNavExpander.vue';
 
 	let parentToggle = ref(false);
 	let watchToggle = ref(false);
 	let suggestionToggle = ref(false);
 	let torrentToggle = ref(false);
+	let isSignedIn = ref(false);
+	let currentUser = ref('');
+	let added = ref(false);
+	let auth;
 
 	const route = useRoute();
 
 	onMounted(() => {
-		const filmId = route.params.id;
+		let filmId = route.params.id;
 		getFilm(filmId);
 		store.dispatch('getParentalGuidance');
 		store.dispatch('getWatchGuide');
 		store.dispatch('getYTSDetails');
+
+		auth = getAuth();
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				isSignedIn.value = true;
+				currentUser.value = user.uid;
+				const unsub = onSnapshot(doc(db, user.uid, filmId), (doc) => {
+					if (doc.data() === undefined) {
+						added.value = false;
+					} else {
+						added.value = true;
+					}
+				});
+			} else {
+				isSignedIn.value = false;
+			}
+		});
 	});
 
 	onUnmounted(() => {
@@ -156,6 +208,38 @@
 	};
 
 	const store = useStore();
+
+	const addWatchList = (filmDetail) => {
+		auth = getAuth();
+		onAuthStateChanged(auth, async (user) => {
+			if (user) {
+				isSignedIn.value = true;
+				const colRef = collection(db, user.uid);
+				let docData = {
+					filmID: filmDetail.imdbID,
+					filmName: filmDetail.Title,
+					filmPoster: filmDetail.Poster,
+					filmIMDB: filmDetail.imdbRating,
+					createdAt: serverTimestamp(),
+				};
+				setDoc(doc(colRef, filmDetail.imdbID), docData);
+			} else {
+				isSignedIn.value = false;
+			}
+		});
+	};
+
+	const removeWatchList = (filmDetail) => {
+		auth = getAuth();
+		onAuthStateChanged(auth, async (user) => {
+			if (user) {
+				isSignedIn.value = true;
+				deleteDoc(doc(db, user.uid, filmDetail.imdbID));
+			} else {
+				isSignedIn.value = false;
+			}
+		});
+	};
 
 	function getFilm(id) {
 		store.commit('setFilmID', id);
