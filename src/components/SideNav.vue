@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="navbar fixed top-5 left-28 w-72 z-40 bg-black text-white flex flex-col rounded-3xl overflow-hidden"
+		class="navbar fixed sm:top-5 top-20 sm:left-28 left-5 w-72 z-40 bg-black text-white flex flex-col rounded-3xl overflow-hidden"
 	>
 		<div
 			@click="handleSignOut"
